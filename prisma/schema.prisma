@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,17 +7,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Airline {
-  id        Int      @id @default(autoincrement())
-  name      String
-  iataCode  String   @unique
-  countries CountryCoverage[]
+  id              String         @id @default(uuid()) @db.Uuid
+  name            String         @unique
+  description     String
+  foundingDate    DateTime
+  website         String
+  
+  // Many-to-many relationship with Airport
+  airports        AirlineAirport[]
+  
+  // Audit fields (optional but recommended)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@map("airlines")
 }
 
-model CountryCoverage {
-  id         Int      @id @default(autoincrement())
-  country    String
-  airline    Airline  @relation(fields: [airlineId], references: [id])
-  airlineId  Int
+// Airport Entity
+model Airport {
+  id              String         @id @default(uuid()) @db.Uuid
+  name            String
+  code            String         @unique
+  country         String
+  city            String
+  
+  // Many-to-many relationship with Airline
+  airlines        AirlineAirport[]
+  
+  // Audit fields (optional but recommended)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@map("airports")
+}
+
+// Many-to-many relationship table between Airline and Airport
+model AirlineAirport {
+  airlineId       String         @db.Uuid
+  airportId       String         @db.Uuid
+  
+  // Relations with main entities
+  airline         Airline        @relation(fields: [airlineId], references: [id], onDelete: Cascade)
+  airport         Airport        @relation(fields: [airportId], references: [id], onDelete: Cascade)
+  
+  // Additional fields useful for coverage information
+  startDate       DateTime       @default(now())  // Date from which the airline operates at this airport
+  active          Boolean        @default(true)   // If the coverage is currently active
+  
+  // Audit fields
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Composite primary key definition
+  @@id([airlineId, airportId])
+  @@map("airline_airport")
 }
