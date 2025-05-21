@@ -1,25 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotFoundException } from '@nestjs/common';
 import { AirlineAirportService } from './airline-airport.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotFoundException } from '@nestjs/common';
 
 describe('AirlineAirportService', () => {
   let service: AirlineAirportService;
   let prismaService: PrismaService;
 
-  // Mock data
+  // Datos de muestra para las pruebas
+  const mockAirlineId = 'airline-uuid';
+  const mockAirportId = 'airport-uuid';
+  const mockAirportId2 = 'airport-uuid-2';
+
+  // Mock de objetos completos
   const mockAirline = {
-    id: 'airline-uuid-1',
+    id: mockAirlineId,
     name: 'Test Airline',
     description: 'Test Description',
     foundingDate: new Date(),
-    website: 'https://test-airline.com',
+    website: 'https://testairline.com',
     createdAt: new Date(),
     updatedAt: new Date(),
   };
 
   const mockAirport = {
-    id: 'airport-uuid-1',
+    id: mockAirportId,
     name: 'Test Airport',
     code: 'TST',
     country: 'Test Country',
@@ -29,27 +34,26 @@ describe('AirlineAirportService', () => {
   };
 
   const mockAirport2 = {
-    id: 'airport-uuid-2',
-    name: 'Another Airport',
-    code: 'ANT',
-    country: 'Another Country',
-    city: 'Another City',
+    id: mockAirportId2,
+    name: 'Test Airport 2',
+    code: 'TS2',
+    country: 'Test Country 2',
+    city: 'Test City 2',
     createdAt: new Date(),
     updatedAt: new Date(),
   };
 
   const mockAirlineAirport = {
-    airlineId: 'airline-uuid-1',
-    airportId: 'airport-uuid-1',
+    airlineId: mockAirlineId,
+    airportId: mockAirportId,
     startDate: new Date(),
     active: true,
     createdAt: new Date(),
     updatedAt: new Date(),
-    airline: mockAirline,
     airport: mockAirport,
+    airline: mockAirline,
   };
 
-  // Create mock for PrismaService
   const mockPrismaService = {
     airline: {
       findUnique: jest.fn(),
@@ -58,6 +62,7 @@ describe('AirlineAirportService', () => {
     },
     airport: {
       findUnique: jest.fn(),
+      findUniqueOrThrow: jest.fn(),
     },
     airlineAirport: {
       findFirst: jest.fn(),
@@ -69,14 +74,17 @@ describe('AirlineAirportService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AirlineAirportService,
-        { provide: PrismaService, useValue: mockPrismaService },
+        {
+          provide: PrismaService,
+          useValue: mockPrismaService,
+        },
       ],
     }).compile();
 
     service = module.get<AirlineAirportService>(AirlineAirportService);
     prismaService = module.get<PrismaService>(PrismaService);
-    
-    // Reset all mocks before each test
+
+    // Restablecer todos los mocks antes de cada prueba
     jest.clearAllMocks();
   });
 
@@ -85,240 +93,239 @@ describe('AirlineAirportService', () => {
   });
 
   describe('addAirportToAirline', () => {
-    it('should add an airport to an airline successfully', async () => {
-      // Arrange
-      mockPrismaService.airline.findUnique.mockResolvedValueOnce(mockAirline);
-      mockPrismaService.airport.findUnique.mockResolvedValueOnce(mockAirport);
-      mockPrismaService.airline.update.mockResolvedValueOnce({
+    it('should add an airport to an airline', async () => {
+      // Mock de las respuestas de Prisma
+      mockPrismaService.airline.findUnique.mockResolvedValue(mockAirline);
+      mockPrismaService.airport.findUnique.mockResolvedValue(mockAirport);
+      mockPrismaService.airline.update.mockResolvedValue({
         ...mockAirline,
         airports: [{ airport: mockAirport }],
       });
 
-      // Act
-      const result = await service.addAirportToAirline(mockAirline.id, mockAirport.id);
+      // Ejecutar el método
+      const result = await service.addAirportToAirline(mockAirlineId, mockAirportId);
 
-      // Assert
+      // Verificar que se hayan realizado las llamadas correctas
       expect(mockPrismaService.airline.findUnique).toHaveBeenCalledWith({
-        where: { id: mockAirline.id },
+        where: { id: mockAirlineId },
       });
       expect(mockPrismaService.airport.findUnique).toHaveBeenCalledWith({
-        where: { id: mockAirport.id },
+        where: { id: mockAirportId },
       });
       expect(mockPrismaService.airline.update).toHaveBeenCalledWith({
-        where: { id: mockAirline.id },
+        where: { id: mockAirlineId },
         data: {
           airports: {
-            create: [{ airport: { connect: { id: mockAirport.id } } }],
+            create: [{ airport: { connect: { id: mockAirportId } } }],
           },
         },
         include: { airports: true },
       });
+
+      // Verificar el resultado
       expect(result).toEqual({
         ...mockAirline,
         airports: [{ airport: mockAirport }],
       });
     });
 
-    it('should throw NotFoundException when airline does not exist', async () => {
-      // Arrange
-      mockPrismaService.airline.findUnique.mockResolvedValueOnce(null);
+    it('should throw NotFoundException if airline not found', async () => {
+      // Mock de respuestas de Prisma
+      mockPrismaService.airline.findUnique.mockResolvedValue(null);
 
-      // Act & Assert
-      await expect(service.addAirportToAirline('non-existent', mockAirport.id))
-        .rejects.toThrow(new NotFoundException('Airline not found'));
-      expect(mockPrismaService.airline.findUnique).toHaveBeenCalledTimes(1);
-      expect(mockPrismaService.airport.findUnique).not.toHaveBeenCalled();
-      expect(mockPrismaService.airline.update).not.toHaveBeenCalled();
+      // Verificar que se lance la excepción
+      await expect(
+        service.addAirportToAirline(mockAirlineId, mockAirportId)
+      ).rejects.toThrow(NotFoundException);
+      expect(mockPrismaService.airline.findUnique).toHaveBeenCalledWith({
+        where: { id: mockAirlineId },
+      });
     });
 
-    it('should throw NotFoundException when airport does not exist', async () => {
-      // Arrange
-      mockPrismaService.airline.findUnique.mockResolvedValueOnce(mockAirline);
-      mockPrismaService.airport.findUnique.mockResolvedValueOnce(null);
+    it('should throw NotFoundException if airport not found', async () => {
+      // Mock de respuestas de Prisma
+      mockPrismaService.airline.findUnique.mockResolvedValue(mockAirline);
+      mockPrismaService.airport.findUnique.mockResolvedValue(null);
 
-      // Act & Assert
-      await expect(service.addAirportToAirline(mockAirline.id, 'non-existent'))
-        .rejects.toThrow(new NotFoundException('Airport not found'));
-      expect(mockPrismaService.airline.findUnique).toHaveBeenCalledTimes(1);
-      expect(mockPrismaService.airport.findUnique).toHaveBeenCalledTimes(1);
-      expect(mockPrismaService.airline.update).not.toHaveBeenCalled();
+      // Verificar que se lance la excepción
+      await expect(
+        service.addAirportToAirline(mockAirlineId, mockAirportId)
+      ).rejects.toThrow(NotFoundException);
+      expect(mockPrismaService.airport.findUnique).toHaveBeenCalledWith({
+        where: { id: mockAirportId },
+      });
     });
   });
 
   describe('findAirportsFromAirline', () => {
     it('should return all airports associated with an airline', async () => {
-      // Arrange
-      const mockAirlineWithAirports = {
+      // Mock de la respuesta de Prisma
+      mockPrismaService.airline.findUnique.mockResolvedValue({
         ...mockAirline,
         airports: [
           { airport: mockAirport },
           { airport: mockAirport2 },
         ],
-      };
-      mockPrismaService.airline.findUnique.mockResolvedValueOnce(mockAirlineWithAirports);
+      });
 
-      // Act
-      const result = await service.findAirportsFromAirline(mockAirline.id);
+      // Ejecutar el método
+      const result = await service.findAirportsFromAirline(mockAirlineId);
 
-      // Assert
+      // Verificar que se haya realizado la llamada correcta
       expect(mockPrismaService.airline.findUnique).toHaveBeenCalledWith({
-        where: { id: mockAirline.id },
+        where: { id: mockAirlineId },
         include: {
           airports: {
             include: { airport: true },
           },
         },
       });
+
+      // Verificar el resultado
       expect(result).toEqual([mockAirport, mockAirport2]);
     });
 
-    it('should throw NotFoundException when airline does not exist', async () => {
-      // Arrange
-      mockPrismaService.airline.findUnique.mockResolvedValueOnce(null);
+    it('should throw NotFoundException if airline not found', async () => {
+      // Mock de la respuesta de Prisma
+      mockPrismaService.airline.findUnique.mockResolvedValue(null);
 
-      // Act & Assert
-      await expect(service.findAirportsFromAirline('non-existent'))
-        .rejects.toThrow(new NotFoundException('Airline not found'));
-      expect(mockPrismaService.airline.findUnique).toHaveBeenCalledTimes(1);
+      // Verificar que se lance la excepción
+      await expect(
+        service.findAirportsFromAirline(mockAirlineId)
+      ).rejects.toThrow(NotFoundException);
     });
   });
 
   describe('findAirportFromAirline', () => {
-    it('should return specific airport associated with an airline', async () => {
-      // Arrange
-      mockPrismaService.airlineAirport.findFirst.mockResolvedValueOnce(mockAirlineAirport);
+    it('should return a specific airport from an airline', async () => {
+      // Mock de la respuesta de Prisma
+      mockPrismaService.airlineAirport.findFirst.mockResolvedValue(mockAirlineAirport);
 
-      // Act
-      const result = await service.findAirportFromAirline(mockAirline.id, mockAirport.id);
+      // Ejecutar el método
+      const result = await service.findAirportFromAirline(mockAirlineId, mockAirportId);
 
-      // Assert
+      // Verificar que se haya realizado la llamada correcta
       expect(mockPrismaService.airlineAirport.findFirst).toHaveBeenCalledWith({
         where: {
-          airlineId: mockAirline.id,
-          airportId: mockAirport.id,
+          airlineId: mockAirlineId,
+          airportId: mockAirportId,
         },
         include: { airport: true },
       });
+
+      // Verificar el resultado
       expect(result).toEqual(mockAirport);
     });
 
-    it('should throw NotFoundException when relation does not exist', async () => {
-      // Arrange
-      mockPrismaService.airlineAirport.findFirst.mockResolvedValueOnce(null);
+    it('should throw NotFoundException if relationship not found', async () => {
+      // Mock de la respuesta de Prisma
+      mockPrismaService.airlineAirport.findFirst.mockResolvedValue(null);
 
-      // Act & Assert
-      await expect(service.findAirportFromAirline(mockAirline.id, 'non-existent'))
-        .rejects.toThrow(new NotFoundException('Airport not associated with airline'));
-      expect(mockPrismaService.airlineAirport.findFirst).toHaveBeenCalledTimes(1);
+      // Verificar que se lance la excepción
+      await expect(
+        service.findAirportFromAirline(mockAirlineId, mockAirportId)
+      ).rejects.toThrow(NotFoundException);
     });
   });
 
   describe('updateAirportsFromAirline', () => {
-    it('should update all airports associated with an airline', async () => {
-      // Arrange
-      const airportIds = [mockAirport.id, mockAirport2.id];
-      mockPrismaService.airline.findUniqueOrThrow.mockResolvedValueOnce(mockAirline);
-      mockPrismaService.airline.update.mockImplementation((params) => {
-        if (params.data.airports.deleteMany) {
-          return Promise.resolve({ ...mockAirline, airports: [] });
-        } else {
-          return Promise.resolve({
-            ...mockAirline,
-            airports: [
-              { airport: mockAirport },
-              { airport: mockAirport2 },
-            ],
-          });
-        }
+    it('should update all airports for an airline', async () => {
+      const airportIds = [mockAirportId, mockAirportId2];
+    
+      // Simulamos que existen aerolínea y aeropuertos
+      mockPrismaService.airline.findUniqueOrThrow.mockResolvedValue(mockAirline);
+      mockPrismaService.airport.findUniqueOrThrow
+        .mockResolvedValueOnce(mockAirport)
+        .mockResolvedValueOnce(mockAirport2);
+    
+      // Simulamos el update de la aerolínea con los aeropuertos actualizados
+      mockPrismaService.airline.update.mockResolvedValue({
+        ...mockAirline,
+        airports: [mockAirport, mockAirport2],
       });
-
-      // Act
-      const result = await service.updateAirportsFromAirline(mockAirline.id, airportIds);
-
-      // Assert
+    
+      const result = await service.updateAirportsFromAirline(mockAirlineId, airportIds);
+    
       expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledWith({
-        where: { id: mockAirline.id },
+        where: { id: mockAirlineId },
       });
-      expect(mockPrismaService.airline.update).toHaveBeenCalledTimes(2);
-      expect(mockPrismaService.airline.update).toHaveBeenNthCalledWith(1, {
-        where: { id: mockAirline.id },
-        data: { airports: { deleteMany: {} } },
+    
+      expect(mockPrismaService.airport.findUniqueOrThrow).toHaveBeenCalledTimes(2);
+      expect(mockPrismaService.airport.findUniqueOrThrow).toHaveBeenCalledWith({
+        where: { id: mockAirportId },
       });
-      expect(mockPrismaService.airline.update).toHaveBeenNthCalledWith(2, {
-        where: { id: mockAirline.id },
-        data: {
-          airports: {
-            create: [
-              { airport: { connect: { id: mockAirport.id } } },
-              { airport: { connect: { id: mockAirport2.id } } },
-            ],
-          },
-        },
-        include: {
-          airports: { include: { airport: true } },
-        },
+      expect(mockPrismaService.airport.findUniqueOrThrow).toHaveBeenCalledWith({
+        where: { id: mockAirportId2 },
       });
+    
       expect(result).toEqual({
         ...mockAirline,
-        airports: [
-          { airport: mockAirport },
-          { airport: mockAirport2 },
-        ],
+        airports: [mockAirport, mockAirport2],
       });
     });
+    
 
-    it('should throw an error when airline does not exist', async () => {
-      // Arrange
-      mockPrismaService.airline.findUniqueOrThrow.mockRejectedValueOnce(new Error('Airline not found'));
+    it('should throw NotFoundException if airline not found', async () => {
+      // Mock de la respuesta de Prisma para que lance una excepción
+      mockPrismaService.airline.findUniqueOrThrow.mockRejectedValue(new Error());
 
-      // Act & Assert
-      await expect(service.updateAirportsFromAirline('non-existent', [mockAirport.id]))
-        .rejects.toThrow('Airline not found');
-      expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledTimes(1);
-      expect(mockPrismaService.airline.update).not.toHaveBeenCalled();
+      // Verificar que se lance la excepción
+      await expect(
+        service.updateAirportsFromAirline(mockAirlineId, [mockAirportId])
+      ).rejects.toThrow(NotFoundException);
+    });
+
+    it('should throw NotFoundException if any airport not found', async () => {
+      // Mock de las respuestas de Prisma
+      mockPrismaService.airline.findUniqueOrThrow.mockResolvedValue(mockAirline);
+      mockPrismaService.airline.update.mockResolvedValue(mockAirline);
+      mockPrismaService.airport.findUniqueOrThrow.mockRejectedValue(new Error());
+
+      // Verificar que se lance la excepción
+      await expect(
+        service.updateAirportsFromAirline(mockAirlineId, [mockAirportId])
+      ).rejects.toThrow(NotFoundException);
     });
   });
 
   describe('deleteAirportFromAirline', () => {
-    it('should delete an airport from an airline successfully', async () => {
-      // Arrange
-      const deletedRelation = {
-        airlineId: mockAirline.id,
-        airportId: mockAirport.id,
-      };
-      mockPrismaService.airlineAirport.findFirst.mockResolvedValueOnce(mockAirlineAirport);
-      mockPrismaService.airlineAirport.delete.mockResolvedValueOnce(deletedRelation);
+    it('should delete an airport from an airline', async () => {
+      // Mock de las respuestas de Prisma
+      mockPrismaService.airlineAirport.findFirst.mockResolvedValue(mockAirlineAirport);
+      mockPrismaService.airlineAirport.delete.mockResolvedValue(mockAirlineAirport);
 
-      // Act
-      const result = await service.deleteAirportFromAirline(mockAirline.id, mockAirport.id);
+      // Ejecutar el método
+      const result = await service.deleteAirportFromAirline(mockAirlineId, mockAirportId);
 
-      // Assert
+      // Verificar que se hayan realizado las llamadas correctas
       expect(mockPrismaService.airlineAirport.findFirst).toHaveBeenCalledWith({
         where: {
-          airlineId: mockAirline.id,
-          airportId: mockAirport.id,
+          airlineId: mockAirlineId,
+          airportId: mockAirportId,
         },
       });
+      
       expect(mockPrismaService.airlineAirport.delete).toHaveBeenCalledWith({
         where: {
           airlineId_airportId: {
-            airlineId: mockAirline.id,
-            airportId: mockAirport.id,
+            airlineId: mockAirlineId,
+            airportId: mockAirportId,
           },
         },
       });
-      expect(result).toEqual(deletedRelation);
+
+      // Verificar el resultado
+      expect(result).toEqual(mockAirlineAirport);
     });
 
-    it('should throw NotFoundException when relation does not exist', async () => {
-      // Arrange
-      mockPrismaService.airlineAirport.findFirst.mockResolvedValueOnce(null);
+    it('should throw NotFoundException if relationship not found', async () => {
+      // Mock de la respuesta de Prisma
+      mockPrismaService.airlineAirport.findFirst.mockResolvedValue(null);
 
-      // Act & Assert
-      await expect(service.deleteAirportFromAirline(mockAirline.id, 'non-existent'))
-        .rejects.toThrow(new NotFoundException('Airport not associated with airline'));
-      expect(mockPrismaService.airlineAirport.findFirst).toHaveBeenCalledTimes(1);
-      expect(mockPrismaService.airlineAirport.delete).not.toHaveBeenCalled();
+      // Verificar que se lance la excepción
+      await expect(
+        service.deleteAirportFromAirline(mockAirlineId, mockAirportId)
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });

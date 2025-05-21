@@ -10,6 +10,7 @@ describe('AirportService', () => {
   const mockPrisma = {
     airport: {
       findMany: jest.fn(),
+      findUniqueOrThrow: jest.fn(),
       findUnique: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
@@ -45,21 +46,25 @@ describe('AirportService', () => {
 
   it('should find one airport by id', async () => {
     const airport = { id: '1', name: 'Airport1' };
-    mockPrisma.airport.findUnique.mockResolvedValue(airport);
+    mockPrisma.airport.findUniqueOrThrow.mockResolvedValue(airport);
 
     const result = await service.findOne('1');
     expect(result).toEqual(airport);
-    expect(mockPrisma.airport.findUnique).toHaveBeenCalledWith({
+    expect(mockPrisma.airport.findUniqueOrThrow).toHaveBeenCalledWith({
       where: { id: '1' },
     });
   });
 
   it('should throw NotFoundException when airport not found', async () => {
-    mockPrisma.airport.findUnique.mockResolvedValue(null);
+    // Mock a rejection instead of resolving to null
+    mockPrisma.airport.findUniqueOrThrow.mockRejectedValue(new Error('Not found'));
 
     await expect(service.findOne('not-exist')).rejects.toThrow(
       NotFoundException,
     );
+    expect(mockPrisma.airport.findUniqueOrThrow).toHaveBeenCalledWith({
+      where: { id: 'not-exist' },
+    });
   });
 
   it('should create an airport', async () => {
@@ -69,11 +74,40 @@ describe('AirportService', () => {
       country: 'Country',
       city: 'City',
     };
+    
+    // Mock findUnique to return null (no existing airport)
+    mockPrisma.airport.findUnique.mockResolvedValue(null);
     mockPrisma.airport.create.mockResolvedValue(dto);
 
     const result = await service.create(dto);
     expect(result).toEqual(dto);
+    expect(mockPrisma.airport.findUnique).toHaveBeenCalledWith({
+      where: { code: dto.code },
+    });
     expect(mockPrisma.airport.create).toHaveBeenCalledWith({ data: dto });
+  });
+
+  it('should throw NotFoundException when creating an airport with existing code', async () => {
+    const dto = {
+      name: 'New Airport',
+      code: 'ABC',
+      country: 'Country',
+      city: 'City',
+    };
+    
+    // Mock findUnique to return an existing airport
+    mockPrisma.airport.findUnique.mockResolvedValue({
+      id: 'existing-id',
+      ...dto,
+    });
+
+    await expect(service.create(dto)).rejects.toThrow(
+      NotFoundException,
+    );
+    expect(mockPrisma.airport.findUnique).toHaveBeenCalledWith({
+      where: { code: dto.code },
+    });
+    expect(mockPrisma.airport.create).not.toHaveBeenCalled();
   });
 
   it('should update an airport', async () => {
@@ -88,11 +122,14 @@ describe('AirportService', () => {
     };
     const updatedAirport = { ...existingAirport, ...updateDto };
 
-    mockPrisma.airport.findUnique.mockResolvedValue(existingAirport);
+    mockPrisma.airport.findUniqueOrThrow.mockResolvedValue(existingAirport);
     mockPrisma.airport.update.mockResolvedValue(updatedAirport);
 
     const result = await service.update(id, updateDto);
     expect(result).toEqual(updatedAirport);
+    expect(mockPrisma.airport.findUniqueOrThrow).toHaveBeenCalledWith({
+      where: { id },
+    });
     expect(mockPrisma.airport.update).toHaveBeenCalledWith({
       where: { id },
       data: updateDto,
@@ -100,29 +137,44 @@ describe('AirportService', () => {
   });
 
   it('should throw NotFoundException when updating a non-existent airport', async () => {
-    mockPrisma.airport.findUnique.mockResolvedValue(null);
+    // Mock a rejection instead of resolving to null
+    mockPrisma.airport.findUniqueOrThrow.mockRejectedValue(new Error('Not found'));
 
     await expect(
       service.update('not-exist', { city: 'New City' }),
     ).rejects.toThrow(NotFoundException);
+    
+    expect(mockPrisma.airport.findUniqueOrThrow).toHaveBeenCalledWith({
+      where: { id: 'not-exist' },
+    });
+    expect(mockPrisma.airport.update).not.toHaveBeenCalled();
   });
 
   it('should delete an airport', async () => {
     const id = '1';
     const airport = { id, name: 'Airport1' };
-    mockPrisma.airport.findUnique.mockResolvedValue(airport);
+    mockPrisma.airport.findUniqueOrThrow.mockResolvedValue(airport);
     mockPrisma.airport.delete.mockResolvedValue(airport);
 
     const result = await service.delete(id);
     expect(result).toEqual(airport);
+    expect(mockPrisma.airport.findUniqueOrThrow).toHaveBeenCalledWith({
+      where: { id },
+    });
     expect(mockPrisma.airport.delete).toHaveBeenCalledWith({ where: { id } });
   });
 
   it('should throw NotFoundException when deleting a non-existent airport', async () => {
-    mockPrisma.airport.findUnique.mockResolvedValue(null);
+    // Mock a rejection instead of resolving to null
+    mockPrisma.airport.findUniqueOrThrow.mockRejectedValue(new Error('Not found'));
 
     await expect(service.delete('not-exist')).rejects.toThrow(
       NotFoundException,
     );
+    
+    expect(mockPrisma.airport.findUniqueOrThrow).toHaveBeenCalledWith({
+      where: { id: 'not-exist' },
+    });
+    expect(mockPrisma.airport.delete).not.toHaveBeenCalled();
   });
 });

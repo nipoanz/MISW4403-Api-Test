@@ -50,12 +50,22 @@ export class AirlineAirportService {
   }
 
   async updateAirportsFromAirline(airlineId: string, airportIds: string[]) {
-    await this.prisma.airline.findUniqueOrThrow({ where: { id: airlineId } });
+    await this.prisma.airline.findUniqueOrThrow({ where: { id: airlineId } }).catch(() => {
+      throw new NotFoundException('Airline not found');
+    });
+    
+   
 
     await this.prisma.airline.update({
       where: { id: airlineId },
       data: { airports: { deleteMany: {} } },
     });
+
+    for (const id of airportIds) {
+      await this.prisma.airport.findUniqueOrThrow({ where: { id } }).catch(() => {
+        throw new NotFoundException('Airport not found');
+      });
+    }
 
     const createRelations = airportIds.map((airportId) => ({
       airport: { connect: { id: airportId } },

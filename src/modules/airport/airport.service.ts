@@ -12,13 +12,19 @@ export class AirportService {
   }
 
   async findOne(id: string) {
-    const airport = await this.prisma.airport.findUnique({ where: { id } });
-    if (!airport)
+    const airport = await this.prisma.airport.findUniqueOrThrow({ where: { id } }).catch((error) => {
       throw new NotFoundException(`Airport with id ${id} not found`);
+    });
     return airport;
   }
 
   async create(data: CreateAirportDto) {
+    const existingAirport = await this.prisma.airport.findUnique({
+      where: { code: data.code },
+    });
+    if (existingAirport) {
+      throw new NotFoundException(`Airport with code ${data.code} already exists`);
+    }
     return this.prisma.airport.create({ data });
   }
 

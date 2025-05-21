@@ -1,0 +1,2433 @@
+{
+	"info": {
+		"_postman_id": "756fa8bd-1548-4ec2-bda3-78c9f2a40c0b",
+		"name": "Airport",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10832015",
+		"_collection_link": "https://red-trinity-751297.postman.co/workspace/MISW4403_202512_E03-Dise%C3%B1oApis~07a1178e-31a0-4ec4-a3c4-45ba557834fd/collection/10832015-756fa8bd-1548-4ec2-bda3-78c9f2a40c0b?action=share&source=collection_link&creator=10832015"
+	},
+	"item": [
+		{
+			"name": "Airline",
+			"item": [
+				{
+					"name": "1. Crear una aerolínea válida",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {\r",
+									"  const responseJson = pm.response.json();\r",
+									"  if (responseJson.id) {\r",
+									"    pm.collectionVariables.set(\"airlineId\", responseJson.id);\r",
+									"    console.log(\"Variable airlineId guardada:\", responseJson.id);\r",
+									"  }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Aerolínea {{$randomCompanyName}}\",\r\n    \"description\": \"{{$randomLoremSentences}}\",\r\n    \"foundingDate\": \"1990-01-01T00:00:00Z\",\r\n    \"website\": \"{{$randomUrl}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/airlines",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "1. Crear una aerolínea válida",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Aerolínea {{$randomCompanyName}}\",\r\n    \"description\": \"{{$randomLoremSentences}}\",\r\n    \"foundingDate\": \"1990-01-01T00:00:00Z\",\r\n    \"website\": \"{{$randomUrl}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/airlines",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "337"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"151-bPanepP82Zs2uFJtJWXd5Ukxcj4\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 02:12:58 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"de3863d6-9fd7-4569-a7bb-a7ac57945fb8\",\n    \"name\": \"Aerolínea Kozey - Collier\",\n    \"description\": \"Earum aspernatur aperiam recusandae autem vel. Voluptas commodi odio qui architecto.\",\n    \"foundingDate\": \"1990-01-01T00:00:00.000Z\",\n    \"website\": \"https://constantin.org\",\n    \"createdAt\": \"2025-05-21T02:12:57.965Z\",\n    \"updatedAt\": \"2025-05-21T02:12:57.965Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "2. Crear una aerolínea inválida",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Aerolínea {{$randomCompanyName}}\",\r\n    \"description\": \"{{$randomLoremSentences}}\",\r\n    \"foundingDate\": \"2025-10-01T00:00:00Z\",\r\n    \"website\": \"{{$randomUrl}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/airlines",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "2. Crear una aerolínea inválida",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Aerolínea {{$randomCompanyName}}\",\r\n    \"description\": \"{{$randomLoremSentences}}\",\r\n    \"foundingDate\": \"2025-10-01T00:00:00Z\",\r\n    \"website\": \"{{$randomUrl}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/airlines",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "100"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"64-AEt8U5ZW3YWaps1tGkIkmWFSoYs\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 02:13:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"La fecha de fundación debe estar en el pasado.\",\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+						}
+					]
+				},
+				{
+					"name": "3.  Obtener todas las aerolíneas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "3.  Obtener todas las aerolíneas",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "339"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"153-I9C//b9IOHWzbvRTGGFWXAlfXB0\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 02:14:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"de3863d6-9fd7-4569-a7bb-a7ac57945fb8\",\n        \"name\": \"Aerolínea Kozey - Collier\",\n        \"description\": \"Earum aspernatur aperiam recusandae autem vel. Voluptas commodi odio qui architecto.\",\n        \"foundingDate\": \"1990-01-01T00:00:00.000Z\",\n        \"website\": \"https://constantin.org\",\n        \"createdAt\": \"2025-05-21T02:12:57.965Z\",\n        \"updatedAt\": \"2025-05-21T02:12:57.965Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "4. Obtener una aerolínea por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{airlineId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "4. Obtener una aerolínea por ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{airlineId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "337"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"151-bPanepP82Zs2uFJtJWXd5Ukxcj4\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 02:14:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"de3863d6-9fd7-4569-a7bb-a7ac57945fb8\",\n    \"name\": \"Aerolínea Kozey - Collier\",\n    \"description\": \"Earum aspernatur aperiam recusandae autem vel. Voluptas commodi odio qui architecto.\",\n    \"foundingDate\": \"1990-01-01T00:00:00.000Z\",\n    \"website\": \"https://constantin.org\",\n    \"createdAt\": \"2025-05-21T02:12:57.965Z\",\n    \"updatedAt\": \"2025-05-21T02:12:57.965Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "5. Obtener una aerolínea por un ID que no existe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines/0000-0000-0000-0000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"0000-0000-0000-0000"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "5. Obtener una aerolínea por un ID que no existe",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines/no-exixste",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"no-exixste"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "76"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4c-6tMCuEeZywmj3P8xksrbsZ5h1nI\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 02:16:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Aerolínea no encontrada.\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "6. Actualizar una aerolínea",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Aerolínea {{$randomCompanyName}}\",\r\n    \"description\": \"{{$randomLoremSentences}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/airlines/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{airlineId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "6. Actualizar una aerolínea",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Aerolínea {{$randomCompanyName}}\",\r\n    \"description\": \"{{$randomLoremSentences}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/airlines/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{airlineId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "461"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1cd-MrjyM9H74TJhas26IHCay3R/aL0\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 02:20:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"de3863d6-9fd7-4569-a7bb-a7ac57945fb8\",\n    \"name\": \"Aerolínea Prohaska - Spencer\",\n    \"description\": \"Omnis accusantium odio neque vero nulla odio expedita. Explicabo minus perspiciatis repudiandae enim aut accusamus beatae numquam sit. Ut enim incidunt pariatur tenetur molestiae asperiores cum laudantium.\",\n    \"foundingDate\": \"1990-01-01T00:00:00.000Z\",\n    \"website\": \"https://constantin.org\",\n    \"createdAt\": \"2025-05-21T02:12:57.965Z\",\n    \"updatedAt\": \"2025-05-21T02:20:38.169Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "7.  Actualizar una aerolínea con un ID que no existe",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Aerolinea {{$randomCompanyName}}\",\r\n    \"description\": \"{{$randomLoremSentences}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/airlines/no-existe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"no-existe"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "7.  Actualizar una aerolínea con un ID que no existe",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Aerolínea {{$randomCompanyName}}\",\r\n    \"description\": \"{{$randomLoremSentences}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/airlines/no-existe",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"no-existe"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "76"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4c-6tMCuEeZywmj3P8xksrbsZ5h1nI\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 02:22:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Aerolínea no encontrada.\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "8. Eliminar una aerolínea por su ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{airlineId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "8. Eliminar una aerolínea por su ID",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{airlineId}}"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1cd-MrjyM9H74TJhas26IHCay3R/aL0\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 02:23:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "9. Eliminar una aerolínea con un ID que no existe",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines/no-existe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"no-existe"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "9. Eliminar una aerolínea con un ID que no existe",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines/no-existe",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"no-existe"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "76"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4c-6tMCuEeZywmj3P8xksrbsZ5h1nI\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 02:23:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Aerolínea no encontrada.\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Airport",
+			"item": [
+				{
+					"name": "1. Crear un aeropuerto válido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {\r",
+									"  const responseJson = pm.response.json();\r",
+									"  if (responseJson.id) {\r",
+									"    pm.collectionVariables.set(\"airportId\", responseJson.id);\r",
+									"    console.log(\"Variable airportId guardada:\", responseJson.id);\r",
+									"  }\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Aeropuerto {{$randomCompanyName}}\",\n    \"code\": \"JWT\",\n    \"country\": \"{{$randomCountry}}\",\n    \"city\": \"{{$randomCity}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/airports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airports"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "1. Crear un aeropuerto válido",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Aeropuerto {{$randomCompanyName}}\",\n    \"code\": \"AQW\",\n    \"country\": \"{{$randomCountry}}\",\n    \"city\": \"{{$randomCity}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/airports",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airports"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "229"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"e5-LFjBha+PUuvOALQuPMYGph9To2M\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 09:38:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"ad151a62-e630-4cb2-8a83-3b6417f5d3ea\",\n    \"name\": \"Aeropuerto Ullrich, Wilderman and Upton\",\n    \"code\": \"AQW\",\n    \"country\": \"Ecuador\",\n    \"city\": \"Wintheiserfurt\",\n    \"createdAt\": \"2025-05-21T09:38:32.324Z\",\n    \"updatedAt\": \"2025-05-21T09:38:32.324Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "2. Crear un aeropuerto inválido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Aerolinea {{$randomCompanyName}}\",\n    \"code\": \"-\",\n    \"country\": \"{{$randomCountry}}\",\n    \"city\": \"{{$randomCity}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/airports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airports"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "2. Crear un aeropuerto inválido",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Aerolinea {{$randomCompanyName}}\",\n    \"code\": \"-\",\n    \"country\": \"{{$randomCountry}}\",\n    \"city\": \"{{$randomCity}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/airports",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airports"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "100"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"64-Z2O0mHZKJmcDwOOXalyByvsPcu0\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 09:20:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": [\n        \"The airport code must be exactly 3 characters\"\n    ],\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+						}
+					]
+				},
+				{
+					"name": "3. Obtener todos los aeropuertos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airports"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "3. Obtener todos los aeropuertos",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airports",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airports"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "231"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"e7-qonnAR3eGi+OXdiNEdAuxlHnPGk\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 09:38:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"ad151a62-e630-4cb2-8a83-3b6417f5d3ea\",\n        \"name\": \"Aeropuerto Ullrich, Wilderman and Upton\",\n        \"code\": \"AQW\",\n        \"country\": \"Ecuador\",\n        \"city\": \"Wintheiserfurt\",\n        \"createdAt\": \"2025-05-21T09:38:32.324Z\",\n        \"updatedAt\": \"2025-05-21T09:38:32.324Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "4. Obtener un aeropuerto por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airports/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airports",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{airportId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "4. Obtener un aeropuerto por ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airports/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airports",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{airportId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "229"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"e5-LFjBha+PUuvOALQuPMYGph9To2M\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 09:39:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"ad151a62-e630-4cb2-8a83-3b6417f5d3ea\",\n    \"name\": \"Aeropuerto Ullrich, Wilderman and Upton\",\n    \"code\": \"AQW\",\n    \"country\": \"Ecuador\",\n    \"city\": \"Wintheiserfurt\",\n    \"createdAt\": \"2025-05-21T09:38:32.324Z\",\n    \"updatedAt\": \"2025-05-21T09:38:32.324Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "5. Obtener un aeropuerto con un ID que no existe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airports/invalid-id-123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airports",
+								"invalid-id-123"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "5. Obtener un aeropuerto con un ID que no existe",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airports/invalid-id-123",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airports",
+										"invalid-id-123"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "91"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5b-tIfbZxVEc/Xv9EY5L+vojbLN8+o\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 09:39:58 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Airport with id invalid-id-123 not found\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "6. Actualizar un aeropuerto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Aeropuerto Internacional El Dorado\",\n    \"code\": \"BOG\",\n    \"country\": \"Colombia\",\n    \"city\": \"Bogotá D.C.\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/airports/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airports",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{airportId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "6. Actualizar un aeropuerto",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Aeropuerto Internacional El Dorado\",\n    \"code\": \"BOG\",\n    \"country\": \"Colombia\",\n    \"city\": \"Bogotá D.C.\"\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/airports/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airports",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{airportId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "223"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"df-ym/5+8CeXKxO8h5GVHblKJPKaAk\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 09:40:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"ad151a62-e630-4cb2-8a83-3b6417f5d3ea\",\n    \"name\": \"Aeropuerto Internacional El Dorado\",\n    \"code\": \"BOG\",\n    \"country\": \"Colombia\",\n    \"city\": \"Bogotá D.C.\",\n    \"createdAt\": \"2025-05-21T09:38:32.324Z\",\n    \"updatedAt\": \"2025-05-21T09:40:23.754Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "7. Actualizar un aeropuerto con un ID que no existe",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Non-existent Airport\",\n    \"code\": \"ZZZ\",\n    \"country\": \"Nowhere\",\n    \"city\": \"NoCity\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/airports/invalid-id-123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airports",
+								"invalid-id-123"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "7. Actualizar un aeropuerto con un ID que no existe",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Non-existent Airport\",\n    \"code\": \"ZZZ\",\n    \"country\": \"Nowhere\",\n    \"city\": \"NoCity\"\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/airports/invalid-id-123",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airports",
+										"invalid-id-123"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "91"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5b-tIfbZxVEc/Xv9EY5L+vojbLN8+o\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 09:40:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Airport with id invalid-id-123 not found\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "8. Eliminar un aeropuerto por su ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airports/{{airportId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airports",
+								"{{airportId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "8. Eliminar un aeropuerto por su ID",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airports/{{airportId}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airports",
+										"{{airportId}}"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"df-ym/5+8CeXKxO8h5GVHblKJPKaAk\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 09:42:46 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "9. Eliminar un aeropuerto con un ID que no existe",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airports/invalid-id-123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airports",
+								"invalid-id-123"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "9. Eliminar un aeropuerto con un ID que no existe",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airports/invalid-id-123",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airports",
+										"invalid-id-123"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "91"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5b-tIfbZxVEc/Xv9EY5L+vojbLN8+o\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 09:43:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Airport with id invalid-id-123 not found\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Airline-Airport",
+			"item": [
+				{
+					"name": "1. Asociar un aeropuerto a una aerolínea",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines/{{airlineId}}/airports/{{airportId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"{{airlineId}}",
+								"airports",
+								"{{airportId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "1. Asociar un aeropuerto a una aerolínea",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines/{{airlineId}}/airports/{{airportId}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"{{airlineId}}",
+										"airports",
+										"{{airportId}}"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "740"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2e4-wa1ZryThDIu8WGokE0N41kRiP7M\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 10:04:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"70a19b69-8e9c-4f84-8fbc-e1d68798f7fd\",\n    \"name\": \"Aerolínea McCullough, Koelpin and Bernier\",\n    \"description\": \"Voluptatem quia in unde fugiat quia quia nisi. A et autem amet quia blanditiis rerum. Molestiae natus sit error magnam nam molestiae. Explicabo esse sint. Dignissimos sed est iure non non et dolorem repellat aut. Rerum ut ea.\",\n    \"foundingDate\": \"1990-01-01T00:00:00.000Z\",\n    \"website\": \"https://katheryn.biz\",\n    \"createdAt\": \"2025-05-21T09:43:21.802Z\",\n    \"updatedAt\": \"2025-05-21T09:43:21.802Z\",\n    \"airports\": [\n        {\n            \"airlineId\": \"70a19b69-8e9c-4f84-8fbc-e1d68798f7fd\",\n            \"airportId\": \"162ef61e-295a-4e72-b74a-2eb64bd95cd5\",\n            \"startDate\": \"2025-05-21T10:04:13.269Z\",\n            \"active\": true,\n            \"createdAt\": \"2025-05-21T10:04:13.269Z\",\n            \"updatedAt\": \"2025-05-21T10:04:13.269Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "2. Asociar un aeropuerto que no existe a una aerolínea",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines/{{airlineId}}/airports/99999999-9999-9999-9999-999999999999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"{{airlineId}}",
+								"airports",
+								"99999999-9999-9999-9999-999999999999"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "2. Asociar un aeropuerto que no existe a una aerolínea",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines/{{airlineId}}/airports/99999999-9999-9999-9999-999999999999",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"{{airlineId}}",
+										"airports",
+										"99999999-9999-9999-9999-999999999999"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "68"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"44-oVp2P0LFj4Ape+57K6YcMgTt+Ss\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 10:04:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Airport not found\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "3. Obtener todos los aeropuertos que cubre una aerolínea",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines/{{airlineId}}/airports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"{{airlineId}}",
+								"airports"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "3. Obtener todos los aeropuertos que cubre una aerolínea",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines/{{airlineId}}/airports",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"{{airlineId}}",
+										"airports"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "221"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"dd-Z5yOzi4CKW4x5w+pdWa0k30mQAw\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 10:05:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"162ef61e-295a-4e72-b74a-2eb64bd95cd5\",\n        \"name\": \"Aeropuerto Friesen LLC\",\n        \"code\": \"AQW\",\n        \"country\": \"Marshall Islands\",\n        \"city\": \"Joaquinmouth\",\n        \"createdAt\": \"2025-05-21T10:04:08.070Z\",\n        \"updatedAt\": \"2025-05-21T10:04:08.070Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "4. Obtener un aeropuerto asociado a una aerolínea",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines/{{airlineId}}/airports/{{airportId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"{{airlineId}}",
+								"airports",
+								"{{airportId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "4. Obtener un aeropuerto asociado a una aerolínea",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines/{{airlineId}}/airports/{{airportId}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"{{airlineId}}",
+										"airports",
+										"{{airportId}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "219"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"db-M9UD93Ex/aOIk/ZFafj/5193p9E\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 10:06:07 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"162ef61e-295a-4e72-b74a-2eb64bd95cd5\",\n    \"name\": \"Aeropuerto Friesen LLC\",\n    \"code\": \"AQW\",\n    \"country\": \"Marshall Islands\",\n    \"city\": \"Joaquinmouth\",\n    \"createdAt\": \"2025-05-21T10:04:08.070Z\",\n    \"updatedAt\": \"2025-05-21T10:04:08.070Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "5. Obtener un aeropuerto que no esté asociado a una aerolínea",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines/{{airlineId}}/airports/33333333-3333-3333-3333-333333333333",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"{{airlineId}}",
+								"airports",
+								"33333333-3333-3333-3333-333333333333"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "5. Obtener un aeropuerto que no esté asociado a una aerolínea",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines/{{airlineId}}/airports/33333333-3333-3333-3333-333333333333",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"{{airlineId}}",
+										"airports",
+										"33333333-3333-3333-3333-333333333333"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"56-dzWWKjrhwNnxQuiuklmcGHCzvjY\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 10:07:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Airport not associated with airline\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "6. Actualizar los aeropuertos que están asociados a una aerolínea",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"airportIds\": [\n      \"{{airportId}}\"\n    ]\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/airlines/{{airlineId}}/airports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"{{airlineId}}",
+								"airports"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "6. Actualizar los aeropuertos que están asociados a una aerolínea",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"airportIds\": [\n      \"{{airportId}}\"\n    ]\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/airlines/{{airlineId}}/airports",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"{{airlineId}}",
+										"airports"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "970"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3ca-ZShaZMRpfOc9hCL8whz4RkKin/M\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 10:08:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"70a19b69-8e9c-4f84-8fbc-e1d68798f7fd\",\n    \"name\": \"Aerolínea McCullough, Koelpin and Bernier\",\n    \"description\": \"Voluptatem quia in unde fugiat quia quia nisi. A et autem amet quia blanditiis rerum. Molestiae natus sit error magnam nam molestiae. Explicabo esse sint. Dignissimos sed est iure non non et dolorem repellat aut. Rerum ut ea.\",\n    \"foundingDate\": \"1990-01-01T00:00:00.000Z\",\n    \"website\": \"https://katheryn.biz\",\n    \"createdAt\": \"2025-05-21T09:43:21.802Z\",\n    \"updatedAt\": \"2025-05-21T09:43:21.802Z\",\n    \"airports\": [\n        {\n            \"airlineId\": \"70a19b69-8e9c-4f84-8fbc-e1d68798f7fd\",\n            \"airportId\": \"162ef61e-295a-4e72-b74a-2eb64bd95cd5\",\n            \"startDate\": \"2025-05-21T10:08:15.552Z\",\n            \"active\": true,\n            \"createdAt\": \"2025-05-21T10:08:15.552Z\",\n            \"updatedAt\": \"2025-05-21T10:08:15.552Z\",\n            \"airport\": {\n                \"id\": \"162ef61e-295a-4e72-b74a-2eb64bd95cd5\",\n                \"name\": \"Aeropuerto Friesen LLC\",\n                \"code\": \"AQW\",\n                \"country\": \"Marshall Islands\",\n                \"city\": \"Joaquinmouth\",\n                \"createdAt\": \"2025-05-21T10:04:08.070Z\",\n                \"updatedAt\": \"2025-05-21T10:04:08.070Z\"\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "7. Actualizar los aeropuertos con un aeropuerto inexistente",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"airportIds\": [\n      \"22222222-2222-2222-2222-222222222222\"\n    ]\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/airlines/{{airlineId}}/airports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"{{airlineId}}",
+								"airports"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "7. Actualizar los aeropuertos con un aeropuerto inexistente",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"airportIds\": [\n      \"22222222-2222-2222-2222-222222222222\"\n    ]\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/airlines/{{airlineId}}/airports",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"{{airlineId}}",
+										"airports"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "68"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"44-oVp2P0LFj4Ape+57K6YcMgTt+Ss\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 11:07:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Airport not found\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				},
+				{
+					"name": "8. Eliminar un aeropuerto previamente asociado a una aerolínea",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines/{{airlineId}}/airports/{{airportId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"{{airlineId}}",
+								"airports",
+								"{{airportId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "8. Eliminar un aeropuerto previamente asociado a una aerolínea",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines/{{airlineId}}/airports/{{airportId}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"{{airlineId}}",
+										"airports",
+										"{{airportId}}"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ea-qO5csdyq1n+eyDGji6t7n0TbqBk\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 11:08:07 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "9. Eliminar un aeropuerto que no estaba previamente asociado a una aerolínea",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/airlines/44444444-4444-4444-4444-444444444444/airports/{{airportId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"airlines",
+								"44444444-4444-4444-4444-444444444444",
+								"airports",
+								"{{airportId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "9. Eliminar un aeropuerto que no estaba previamente asociado a una aerolínea",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/airlines/44444444-4444-4444-4444-444444444444/airports/{{airportId}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"airlines",
+										"44444444-4444-4444-4444-444444444444",
+										"airports",
+										"{{airportId}}"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"56-dzWWKjrhwNnxQuiuklmcGHCzvjY\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 21 May 2025 11:08:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Airport not associated with airline\",\n    \"error\": \"Not Found\",\n    \"statusCode\": 404\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "airlineId",
+			"value": ""
+		},
+		{
+			"key": "airportId",
+			"value": ""
+		}
+	]
+}
