@@ -34,12 +34,14 @@ export class AirlineService {
   }
 
   async findOne(id: string) {
-    const airline = await this.prisma.airline.findUnique({ where: { id } });
-    if (!airline) throw new NotFoundException('Aerolínea no encontrada.');
+    const airline = await this.prisma.airline.findUniqueOrThrow({ where: { id } }).catch((error) => {
+      throw new NotFoundException('Aerolínea no encontrada.');
+    });
     return airline;
   }
 
   async update(id: string, dto: UpdateAirlineDto) {
+    await this.findOne(id);
     if (dto.foundingDate) {
       const foundingDate = new Date(dto.foundingDate);
       if (foundingDate >= new Date()) {

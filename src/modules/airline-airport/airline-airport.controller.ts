@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Post,
   Put,
@@ -14,6 +15,7 @@ export class AirlineAirportController {
   constructor(private readonly service: AirlineAirportService) {}
 
   @Post(':airportId')
+  @HttpCode(201)
   addAirportToAirline(
     @Param('airlineId') airlineId: string,
     @Param('airportId') airportId: string,
@@ -43,6 +45,7 @@ export class AirlineAirportController {
   }
 
   @Delete(':airportId')
+  @HttpCode(204)
   deleteAirportFromAirline(
     @Param('airlineId') airlineId: string,
     @Param('airportId') airportId: string,

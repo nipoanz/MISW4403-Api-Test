@@ -37,7 +37,7 @@ describe('AirlineService', () => {
     airline: {
       create: jest.fn(),
       findMany: jest.fn(),
-      findUnique: jest.fn(),
+      findUniqueOrThrow: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
     },
@@ -150,27 +150,27 @@ describe('AirlineService', () => {
   describe('findOne', () => {
     it('debería retornar una aerolínea si existe', async () => {
       // Arrange
-      mockPrismaService.airline.findUnique.mockResolvedValue(mockAirline);
+      mockPrismaService.airline.findUniqueOrThrow.mockResolvedValue(mockAirline);
 
       // Act
       const result = await service.findOne(mockAirline.id);
 
       // Assert
       expect(result).toEqual(mockAirline);
-      expect(mockPrismaService.airline.findUnique).toHaveBeenCalledWith({
+      expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { id: mockAirline.id },
       });
     });
 
     it('debería lanzar NotFoundException si la aerolínea no existe', async () => {
       // Arrange
-      mockPrismaService.airline.findUnique.mockResolvedValue(null);
+      mockPrismaService.airline.findUniqueOrThrow.mockRejectedValue(new Error('Airline not found'));
 
       // Act & Assert
       await expect(service.findOne('non-existent-id')).rejects.toThrow(
         new NotFoundException('Aerolínea no encontrada.')
       );
-      expect(mockPrismaService.airline.findUnique).toHaveBeenCalledWith({
+      expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { id: 'non-existent-id' },
       });
     });
@@ -179,6 +179,7 @@ describe('AirlineService', () => {
   describe('update', () => {
     it('debería actualizar una aerolínea correctamente', async () => {
       // Arrange
+      mockPrismaService.airline.findUniqueOrThrow.mockResolvedValue(mockAirline);
       const updatedAirline = { ...mockAirline, ...mockUpdateAirlineDto };
       mockPrismaService.airline.update.mockResolvedValue(updatedAirline);
 
@@ -187,6 +188,9 @@ describe('AirlineService', () => {
 
       // Assert
       expect(result).toEqual(updatedAirline);
+      expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledWith({
+        where: { id: mockAirline.id },
+      });
       expect(mockPrismaService.airline.update).toHaveBeenCalledWith({
         where: { id: mockAirline.id },
         data: mockUpdateAirlineDto,
@@ -195,6 +199,7 @@ describe('AirlineService', () => {
 
     it('debería actualizar una aerolínea con una fecha pasada válida', async () => {
       // Arrange
+      mockPrismaService.airline.findUniqueOrThrow.mockResolvedValue(mockAirline);
       const pastDate = new Date('1980-01-01').toISOString();
       const updateDtoWithDate = { ...mockUpdateAirlineDto, foundingDate: pastDate };
       const updatedAirline = {
@@ -209,14 +214,32 @@ describe('AirlineService', () => {
 
       // Assert
       expect(result).toEqual(updatedAirline);
+      expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledWith({
+        where: { id: mockAirline.id },
+      });
       expect(mockPrismaService.airline.update).toHaveBeenCalledWith({
         where: { id: mockAirline.id },
         data: updateDtoWithDate,
       });
     });
 
+    it('debería lanzar NotFoundException si la aerolínea no existe', async () => {
+      // Arrange
+      mockPrismaService.airline.findUniqueOrThrow.mockRejectedValue(new Error('Airline not found'));
+
+      // Act & Assert
+      await expect(service.update('non-existent-id', mockUpdateAirlineDto)).rejects.toThrow(
+        new NotFoundException('Aerolínea no encontrada.')
+      );
+      expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledWith({
+        where: { id: 'non-existent-id' },
+      });
+      expect(mockPrismaService.airline.update).not.toHaveBeenCalled();
+    });
+
     it('debería lanzar BadRequestException si la fecha de actualización es futura', async () => {
       // Arrange
+      mockPrismaService.airline.findUniqueOrThrow.mockResolvedValue(mockAirline);
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const updateDtoWithFutureDate = {
@@ -228,16 +251,23 @@ describe('AirlineService', () => {
       await expect(service.update(mockAirline.id, updateDtoWithFutureDate)).rejects.toThrow(
         new BadRequestException('La fecha de fundación debe estar en el pasado.')
       );
+      expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledWith({
+        where: { id: mockAirline.id },
+      });
       expect(mockPrismaService.airline.update).not.toHaveBeenCalled();
     });
 
     it('debería lanzar un error si la actualización falla en la base de datos', async () => {
       // Arrange
+      mockPrismaService.airline.findUniqueOrThrow.mockResolvedValue(mockAirline);
       const dbError = new Error('Database error');
       mockPrismaService.airline.update.mockRejectedValue(dbError);
 
       // Act & Assert
       await expect(service.update(mockAirline.id, mockUpdateAirlineDto)).rejects.toThrow(dbError);
+      expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledWith({
+        where: { id: mockAirline.id },
+      });
       expect(mockPrismaService.airline.update).toHaveBeenCalledWith({
         where: { id: mockAirline.id },
         data: mockUpdateAirlineDto,
@@ -248,7 +278,7 @@ describe('AirlineService', () => {
   describe('delete', () => {
     it('debería eliminar una aerolínea correctamente', async () => {
       // Arrange
-      mockPrismaService.airline.findUnique.mockResolvedValue(mockAirline);
+      mockPrismaService.airline.findUniqueOrThrow.mockResolvedValue(mockAirline);
       mockPrismaService.airline.delete.mockResolvedValue(mockAirline);
 
       // Act
@@ -256,7 +286,7 @@ describe('AirlineService', () => {
 
       // Assert
       expect(result).toEqual(mockAirline);
-      expect(mockPrismaService.airline.findUnique).toHaveBeenCalledWith({
+      expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { id: mockAirline.id },
       });
       expect(mockPrismaService.airline.delete).toHaveBeenCalledWith({
@@ -266,13 +296,13 @@ describe('AirlineService', () => {
 
     it('debería lanzar NotFoundException si la aerolínea a eliminar no existe', async () => {
       // Arrange
-      mockPrismaService.airline.findUnique.mockResolvedValue(null);
+      mockPrismaService.airline.findUniqueOrThrow.mockRejectedValue(new Error('Airline not found'));
 
       // Act & Assert
       await expect(service.delete('non-existent-id')).rejects.toThrow(
         new NotFoundException('Aerolínea no encontrada.')
       );
-      expect(mockPrismaService.airline.findUnique).toHaveBeenCalledWith({
+      expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { id: 'non-existent-id' },
       });
       expect(mockPrismaService.airline.delete).not.toHaveBeenCalled();
@@ -280,13 +310,13 @@ describe('AirlineService', () => {
 
     it('debería lanzar un error si la eliminación falla en la base de datos', async () => {
       // Arrange
+      mockPrismaService.airline.findUniqueOrThrow.mockResolvedValue(mockAirline);
       const dbError = new Error('Database error');
-      mockPrismaService.airline.findUnique.mockResolvedValue(mockAirline);
       mockPrismaService.airline.delete.mockRejectedValue(dbError);
 
       // Act & Assert
       await expect(service.delete(mockAirline.id)).rejects.toThrow(dbError);
-      expect(mockPrismaService.airline.findUnique).toHaveBeenCalledWith({
+      expect(mockPrismaService.airline.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { id: mockAirline.id },
       });
       expect(mockPrismaService.airline.delete).toHaveBeenCalledWith({
